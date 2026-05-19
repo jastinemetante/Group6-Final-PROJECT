@@ -1,0 +1,8 @@
+{
+  "name": "Echoes of the Past",
+  "description": "An educational local history archive for users to discover and share historical stories, photos, and documents from their community.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

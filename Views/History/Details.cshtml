@@ -1,0 +1,72 @@
+@model EchoesOfThePast.Models.Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="max-w-3xl mx-auto space-y-12">
+    <a href="@Url.Action("Index")" class="text-sm font-bold text-zinc-400 hover:text-zinc-900 flex items-center gap-2 transition-colors group">
+        BACK TO ARCHIVE
+    </a>
+
+    <div class="space-y-8">
+        <div class="space-y-4">
+            <div class="flex items-center gap-4 text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
+                <span>@Model.Type</span>
+                <div class="h-1 w-1 rounded-full bg-zinc-300"></div>
+                <span>@Model.CreatedAt.ToString("MMMM do, yyyy")</span>
+            </div>
+            <h1 class="text-5xl font-black leading-tight">@Model.Title</h1>
+            <div class="flex items-center gap-3 text-lg font-serif italic text-zinc-500 border-l-4 border-zinc-100 pl-4">
+                @Model.AuthorName
+            </div>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <div class="aspect-video rounded-3xl overflow-hidden shadow-2xl">
+                <img src="@Model.ImageUrl" alt="@Model.Title" class="w-full h-full object-cover" />
+            </div>
+        }
+
+        <div class="prose prose-zinc max-w-none text-lg">
+            @Html.Raw(Model.Content)
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.AiInsight))
+        {
+            <div class="bg-amber-50 border border-amber-100 p-8 rounded-3xl relative overflow-hidden">
+                <h4 class="text-amber-800 uppercase font-black tracking-widest text-xs mb-4">Historical Insight by Gemini</h4>
+                <div class="prose prose-amber prose-sm max-w-none">
+                    @Html.Raw(Model.AiInsight)
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="pt-16 border-t border-zinc-100 space-y-12">
+        <h3 class="text-3xl font-serif">Community Discourse</h3>
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <form asp-action="AddComment" method="post" class="flex gap-4">
+                <input type="hidden" name="postId" value="@Model.Id" />
+                <input name="text" placeholder="Add your perspective..." class="flex-grow px-6 py-4 rounded-2xl bg-zinc-50 border border-zinc-200 outline-none" required />
+                <button type="submit" class="bg-zinc-900 text-white px-8 py-4 rounded-2xl font-bold">Comment</button>
+            </form>
+        }
+
+        <div class="space-y-6">
+            @foreach (var comment in Model.Comments.OrderByDescending(c => c.CreatedAt))
+            {
+                <div class="p-6 rounded-2xl border border-zinc-50">
+                    <div class="mb-3">
+                        <span class="font-bold text-sm">@comment.AuthorName</span>
+                        <span class="text-[10px] text-zinc-300 font-bold ml-2">@comment.CreatedAt.ToShortDateString()</span>
+                    </div>
+                    <p class="text-zinc-600">@comment.Text</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>

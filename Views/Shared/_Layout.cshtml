@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Echoes of the Past</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-[#FDFCFB] text-zinc-900 font-sans antialiased;
+            }
+            h1, h2, h3, h4, h5, h6 {
+                @apply font-serif font-bold tracking-tight;
+            }
+        }
+        @theme {
+            --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+            --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <header class="border-b border-zinc-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="bg-zinc-900 text-white p-2 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V4m0 0h4M4 4l5 5"/><path d="M20 16v4m0 0h-4m4 0-5-5"/><path d="M4 16v4m0 0h4m-4 0 5-5"/><path d="M20 8V4m0 0h-4m4 0-5 5"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-serif font-black leading-none">Echoes of the Past</h1>
+                    <p class="text-[10px] uppercase tracking-widest font-bold opacity-50 mt-1">Local History Archive</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <a href="@Url.Action("Index", "History")" class="text-sm font-bold hover:text-zinc-600">Archive</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <span class="text-sm font-bold">@User.Identity.Name</span>
+                }
+            </div>
+        </div>
+    </header>
+
+    <main role="main" class="flex-grow max-w-6xl mx-auto px-4 py-12 w-full">
+        @RenderBody()
+    </main>
+
+    <footer class="border-t border-zinc-200 bg-zinc-50 py-12 text-center text-zinc-400">
+        <p class="text-sm font-serif italic">Preserving our history for the generations to come.</p>
+        <p class="text-[10px] uppercase tracking-widest mt-4">© 2026 Echoes of the Past • Education First</p>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
